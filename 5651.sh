@@ -49,6 +49,6 @@ fetch https://github.com/monobilisim/log_browser/archive/master.zip -o /tmp/log_
 unzip -d /usr/local/www /tmp/log_browser.zip
 mv /usr/local/www/log_browser-master /usr/local/www/log_browser
 rm /tmp/log_browser.zip
-fetch https://bitbucket.org/mono/pfsense-5651/raw/master/logimza-imzala.sh -o /sbin/logimza-imzala.sh
-fetch https://bitbucket.org/mono/pfsense-5651/raw/master/dhcptibduzenle.sh -o /sbin/dhcptibduzenle.sh
+fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/logimza-imzala.sh -o /sbin/logimza-imzala.sh
+fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/dhcptibduzenle.sh -o /sbin/dhcptibduzenle.sh
 chmod +x /sbin/logimza-imzala.sh /sbin/dhcptibduzenle.sh
