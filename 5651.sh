@@ -5,14 +5,14 @@ SSL_EMAIL="hotspot@pfsense.biz.tr"
 SSL_O="Monospot"
 SSL_C="TR"
 SSL_ST="Istanbul"
-SSL_L="Kartal"
+SSL_L="Avcilar"
 
 # Gerekirse sifirla
 # rm -rf /logimza/.openssl/password.txt /logimza/.openssl/CA/ /logimza/.openssl/ssl/ /usr/local/www/log_browser /usr/local/www/log_browser-master /sbin/logimza-imzala.sh /sbin/dhcptibduzenle.sh
 
 # Zaman damgasi icin OpenSSL ayarlari
 mkdir -p /logimza/.openssl
-fetch https://bitbucket.org/mono/pfsense-5651/raw/master/openssl.cnf -o /logimza/.openssl/openssl.cnf
+fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/openssl.cnf -o /logimza/.openssl/openssl.cnf
 
 # Sertifika icin rasgele sifre olusturuyoruz
 touch /logimza/.openssl/password.txt
