@@ -28,9 +28,10 @@
 1. `git clone https://github.com/monobilisim/pfsense-5651 logsign-tool` komutu ile repo klonlanır.
 2. `cd logsign-tool` komutu ile proje klasörüne geçilir
 3. `vim setup.conf` komutu ile gerekli bilgiler doldurulur.
-3. `sh setup.sh` ile proje kurulur.
+4. `sh setup.sh` ile proje kurulur.
 
 ## Kullanım
+
 
 
 
