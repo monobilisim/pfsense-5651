@@ -1,6 +1,6 @@
 #!/bin/sh
 
-awk -f /sbin/dhcptibduzenle.sh < /var/dhcpd/var/db/dhcpd.leases > /tmp/dhcpd-tib.log
+awk -f /sbin/dhcpmodify.awk < /var/dhcpd/var/db/dhcpd.leases > /tmp/dhcpd-tib.log
 
 files='
 /tmp/dhcpd-tib.log
@@ -13,7 +13,6 @@ files='
 for file in $files
 do
     if [ -e $file ]; then
-
         cd /logimza
         cp $file ./
 
