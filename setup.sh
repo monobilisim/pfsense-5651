@@ -6,6 +6,9 @@
 #~ remove old configs
 [ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /usr/local/www/log_browser-master /sbin/logsigner.sh /sbin/dhcpdmodify.awk; }
 
+#~ save project directory
+PROJECT_DIRECTORY=$PWD
+
 #~ make new folder and write config
 mkdir -p /logimza/.openssl
 cp $PWD/bin/openssl.cnf /logimza/.openssl/openssl.cnf
@@ -42,7 +45,15 @@ mv /usr/local/www/log_browser-master /usr/local/www/log_browser
 rm /tmp/log_browser.zip
 
 #~ install other helper scripts
+cd $PROJECT_DIRECTORY
 cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/
 #fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/logsigner.sh -o /sbin/logsigner.sh
 #fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk
 chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk
+
+#~ shortcuts
+monospot_entry="\n\t<menu>\n\t\t<name>Monospot</name>\n\t\t<section>Services</section>\n\t\t<url>/monospot</url>\n\t</menu>\n"
+logbrowser_entry="\n\t<menu>\n\t\t<name>5651 Gunluk Tarayicisi</name>\n\t\t<section>Status</section>\n\t\t<url>/log_browser</url>\n\t</menu>\n"
+[ "$MONOSPOT_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${monospot_entry}${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-monospot.xml; exit; }
+[ "$LOGBROWSER_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-monospot.xml; exit; }
+ 
