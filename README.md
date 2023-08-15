@@ -29,10 +29,15 @@
 2. `cd logsign-tool` komutu ile proje klasörüne geçilir
 3. `vim setup.conf` komutu ile gerekli bilgiler doldurulur.
 4. `sh setup.sh` ile proje kurulur.
-
-## Kullanım
-
-
+5. pfsense açılır. System -> Packages -> Available Packages (/pkg_mgr.php) sayfasından “Cron” paketi kurulur.
+6. Services -> Cron (/packages/cron/cron.php) sayfası açılıp aşağıdaki yönergelere göre yeni bir cronjob eklenir;
+  - Dakika: 59
+  - Saat: 23
+  - Ayın Günleri: *
+  - Yılın Ayları: *
+  - Haftanın Günleri: *
+  - Kullanıcı: root
+  - Komut: sh /sbin/logsigner.sh
 
 
 ---
