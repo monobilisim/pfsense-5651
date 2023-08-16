@@ -1,7 +1,8 @@
 #!/bin/sh
 
 #~ import config
-[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/setup.conf; } || . $PWD/setup.conf
+[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/setup.conf; } 
+. $PWD/setup.conf
 
 #~ remove old configs
 [ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /usr/local/www/log_browser-master /sbin/logsigner.sh /sbin/dhcpdmodify.awk; }
