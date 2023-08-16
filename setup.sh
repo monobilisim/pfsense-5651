@@ -46,7 +46,7 @@ rm /tmp/log_browser.zip
 
 #~ install other helper scripts
 cd $PROJECT_DIRECTORY
-[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; } || cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/
+[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; } || cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/
 chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk
 
 #~ shortcuts
