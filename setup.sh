@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #~ import config
-[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/setup.conf; } 
+[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/setup.conf; } 
 . $PWD/setup.conf
 
 #~ remove old configs
@@ -12,7 +12,7 @@ PROJECT_DIRECTORY=$PWD
 
 #~ make new folder and write config
 mkdir -p /logimza/.openssl
-[ "$FETCH_FROM_GIT" == "true" ] && fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/bin/openssl.cnf -o /logimza/.openssl/openssl.cnf || cp $PWD/bin/openssl.cnf /logimza/.openssl/openssl.cnf
+[ "$FETCH_FROM_GIT" == "true" ] && fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/openssl.cnf -o /logimza/.openssl/openssl.cnf || cp $PWD/bin/openssl.cnf /logimza/.openssl/openssl.cnf
 
 #~ generate new password
 openssl rand -base64 32 > /logimza/.openssl/password.txt
@@ -46,7 +46,7 @@ rm /tmp/log_browser.zip
 
 #~ install other helper scripts
 cd $PROJECT_DIRECTORY
-[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/rewrite/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; } || cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/
+[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; } || cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/
 chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk
 
 #~ shortcuts
