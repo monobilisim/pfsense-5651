@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #~ import config
-[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/setup.conf; } 
+[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/setup.conf; echo "Dosyayi bir editor araciligi ile duzenledikten sonra setup.sh'i yeniden calistirin"; exit 0; } 
 . $PWD/setup.conf
 
 #~ remove old configs
