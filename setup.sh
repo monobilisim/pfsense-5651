@@ -45,13 +45,15 @@ mv /usr/local/www/log_browser-master /usr/local/www/log_browser
 rm /tmp/log_browser.zip
 
 #~ install other helper scripts
-cd $PROJECT_DIRECTORY
-[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; } || cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/
-chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk
+[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/monospot-control.sh -o /sbin/monospot-control.sh; } || { cd $PROJECT_DIRECTORY; cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk $PWD/bin/monospot-control.sh /sbin/; }
+chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk /sbin/monospot-control.sh
 
 #~ shortcuts
 monospot_entry="\n\t<menu>\n\t\t<name>Monospot</name>\n\t\t<section>Services</section>\n\t\t<url>/monospot</url>\n\t</menu>\n"
 logbrowser_entry="\n\t<menu>\n\t\t<name>5651 Gunluk Tarayicisi</name>\n\t\t<section>Status</section>\n\t\t<url>/log_browser</url>\n\t</menu>\n"
-[ "$MONOSPOT_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${monospot_entry}${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-monospot.xml; exit; }
-[ "$LOGBROWSER_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-logbrowser.xml; exit; }
- 
+[ "$MONOSPOT_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${monospot_entry}${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-monospot.xml; }
+[ "$LOGBROWSER_SHORTCUT" == "true" ] && [ "$MONOSPOT_SHORTCUT" != "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-logbrowser.xml; }
+
+#~ install cron system
+[ ! -n "$(pkg info | grep -o pfSense-pkg-Cron)" ] && { echo "pfSense-pkg-Cron paketi kuruluyor..."; pkg install -y pfSense-pkg-Cron; }
+[ ! -n "$(cat /cf/conf/config.xml | grep logsigner)" ] && { echo "Logsigner icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/<\/cron>/\t<item>\n\t\t\t<minute>59<\/minute>\n\t\t\t<hour>23<\/hour>\n\t\t\t<mday>*<\/mday>\n\t\t\t<month>*<\/month>\n\t\t\t<wday>*<\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/logsigner.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/g' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
