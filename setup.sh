@@ -60,11 +60,11 @@ logbrowser_entry="\n\t<menu>\n\t\t<name>5651 Gunluk Tarayicisi</name>\n\t\t<sect
 _sep=$(perl -E 'say "#" x 85')
 echo ${_sep}
 printf "### %-77s ###\n" "Degisikliklerin uygulanmasi icin pfSense'in yeniden baslatilmasi gerekiyor."
-printf "### %-77s ###\n" "Sistemi yeniden baslatmak istiyor musunuz? (e|E|evet|EVET|y|Y|yes|YES)"
+printf "### %-77s ###\n" "Sistemi yeniden baslatmak istiyor musunuz? (e|H)"
 echo ${_sep}
 read -p "> " res
 case $res in
-	e|E|evet|EVET|y|Y|yes|YES)
+	e|E|evet|EVET)
 		reboot
 	;;
 	*)
