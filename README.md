@@ -23,12 +23,3 @@
 2. `sh setup.sh` komutu çalıştırılarak ilk etapta setup.conf dosyası çekilir.
 3. Herhangi bir editör aracılığı ile `setup.conf` dosyası düzenlenir.
 4. `setup.conf` dosyası düzenlendikten sonra `sh setup.sh` komutu yeniden çalıştırılır ve kurulum tamamlanır.
-5. pfsense açılır. `System -> Packages -> Available Packages` (`/pkg_mgr.php`) sayfasından `Cron` paketi kurulur.
-6. `Services -> Cron` (`/packages/cron/cron.php`) sayfası açılıp aşağıdaki yönergelere göre yeni bir cronjob eklenir;
-  - Dakika: `59`
-  - Saat: `23`
-  - Ayın Günleri: `*`
-  - Yılın Ayları: `*`
-  - Haftanın Günleri: `*`
-  - Kullanıcı: `root`
-  - Komut: `sh /sbin/logsigner.sh`
