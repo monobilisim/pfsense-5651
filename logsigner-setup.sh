@@ -44,7 +44,7 @@ cp /logimza/.openssl/ssl/tsakey.pem /logimza/.openssl/CA/private/
 [ -d /usr/local/captiveportal/logbrowser     ] && mv /usr/local/captiveportal/logbrowser /usr/local/captiveportal/logbrowser.bak
 [ -d /usr/local/www/logbrowser               ] && rm /usr/local/www/logbrowser
 fetch https://github.com/monobilisim/log_browser/archive/master.zip -o $PWD/logbrowser.zip
-unzip -d /usr/local/captiveportal/ $PWD/logbrowser.zip
+unzip -d /usr/local/captiveportal $PWD/logbrowser.zip
 mv /usr/local/captiveportal/log_browser-master /usr/local/captiveportal/logbrowser
 ln -sf /usr/local/captiveportal/logbrowser /usr/local/www/
 
