@@ -1,8 +1,9 @@
 #!/bin/sh
-
 #~ import config
-[ ! -e $PWD/setup.conf ] && { echo "setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/setup.conf; echo "Dosyayi bir editor araciligi ile duzenledikten sonra setup.sh'i yeniden calistirin"; exit 0; } 
-. $PWD/setup.conf
+[ ! -z "$FROM_MONOSPOT" ] && { CONFIGFILE="monospot-setup.conf"; } || { CONFIGFILE="logbrowser-setup.conf"; }
+
+[ ! -e $PWD/$CONFIGFILE ] && { echo "logbrowser-setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/logbrowser-setup.conf; echo "Dosyayi bir editor araciligi ile duzenledikten sonra logbrowser-setup.sh'i yeniden calistirin"; exit 0; } 
+. $PWD/$CONFIGFILE
 
 #~ remove old configs
 [ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /usr/local/www/log_browser-master /sbin/logsigner.sh /sbin/dhcpdmodify.awk; }
@@ -38,25 +39,30 @@ openssl ca -config /logimza/.openssl/openssl.cnf -passin file:/logimza/.openssl/
 cp /logimza/.openssl/ssl/tsacert.pem /logimza/.openssl/CA/
 cp /logimza/.openssl/ssl/tsakey.pem /logimza/.openssl/CA/private/
 
-#~ install log browser
-fetch https://github.com/monobilisim/log_browser/archive/master.zip -o /tmp/log_browser.zip
-unzip -d /usr/local/www /tmp/log_browser.zip
-mv /usr/local/www/log_browser-master /usr/local/www/log_browser
-rm /tmp/log_browser.zip
+#~ install logbrowser
+[ -d /usr/local/captiveportal/logbrowser.bak ] && rm -rf /usr/local/captiveportal/logbrowser.bak
+[ -d /usr/local/captiveportal/logbrowser     ] && mv /usr/local/captiveportal/logbrowser /usr/local/captiveportal/logbrowser.bak
+[ -d /usr/local/www/logbrowser               ] && rm /usr/local/www/logbrowser
+fetch https://github.com/monobilisim/log_browser/archive/master.zip -o $PWD/logbrowser.zip
+unzip -d /usr/local/captiveportal/ $PWD/logbrowser.zip
+mv /usr/local/captiveportal/log_browser-master /usr/local/captiveportal/logbrowser
+ln -sf /usr/local/captiveportal/logbrowser /usr/local/www/
 
 #~ install other helper scripts
-[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/monospot-control.sh -o /sbin/monospot-control.sh; } || { cd $PROJECT_DIRECTORY; cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk $PWD/bin/monospot-control.sh /sbin/; }
-chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk /sbin/monospot-control.sh
+[ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk;  } || { cd $PROJECT_DIRECTORY; cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/; }
+chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk 
+[ ! -z "$MONOSPOT_CONTROL" ] && { fetch https://raw.githubusercontent.com/monobilisim/monospot/master/bin/monospot-control.sh -o /sbin/monospot-control.sh; chmod +x /sbin/monospot-control.sh; }
 
 #~ shortcuts
 monospot_entry="\n\t<menu>\n\t\t<name>Monospot</name>\n\t\t<section>Services</section>\n\t\t<url>/monospot</url>\n\t</menu>\n"
 logbrowser_entry="\n\t<menu>\n\t\t<name>5651 Gunluk Tarayicisi</name>\n\t\t<section>Status</section>\n\t\t<url>/log_browser</url>\n\t</menu>\n"
-[ "$MONOSPOT_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${monospot_entry}${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-monospot.xml; }
-[ "$LOGBROWSER_SHORTCUT" == "true" ] && [ "$MONOSPOT_SHORTCUT" != "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-logbrowser.xml; }
+[ "$FROM_MONOSPOT" == "true" ] && [ "$MONOSPOT_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${monospot_entry}${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-monospot.xml; }
+[ "$FROM_MONOSPOT" != "true" ] && [ "$LOGBROWSER_SHORTCUT" == "true" ] && { echo -e "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<packagegui>${logbrowser_entry}</packagegui>" > /usr/local/share/pfSense/menu/pfSense-logbrowser.xml; }
 
 #~ install cron system
 [ ! -n "$(pkg info | grep -o pfSense-pkg-Cron)" ] && { echo "pfSense-pkg-Cron paketi kuruluyor..."; pkg install -y pfSense-pkg-Cron; }
 [ ! -n "$(cat /cf/conf/config.xml | grep logsigner)" ] && { echo "Logsigner icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/<\/cron>/\t<item>\n\t\t\t<minute>59<\/minute>\n\t\t\t<hour>23<\/hour>\n\t\t\t<mday>*<\/mday>\n\t\t\t<month>*<\/month>\n\t\t\t<wday>*<\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/logsigner.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/g' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
+[ ! -n "$(cat /cf/conf/config.xml | grep monospot)" ] && { echo "Monospot icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/<\/cron>/\t<item>\n\t\t\t<minute>@reboot<\/minute>\n\t\t\t<hour><\/hour>\n\t\t\t<mday><\/mday>\n\t\t\t<month><\/month>\n\t\t\t<wday><\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/monospot-control.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/g' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
 _sep=$(perl -E 'say "#" x 85')
 echo ${_sep}
 printf "### %-77s ###\n" "Degisikliklerin uygulanmasi icin pfSense'in yeniden baslatilmasi gerekiyor."
