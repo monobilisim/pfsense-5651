@@ -1,8 +1,8 @@
 #!/bin/sh
 #~ import config
-[ ! -z "$FROM_MONOSPOT" ] && { CONFIGFILE="monospot-setup.conf"; } || { CONFIGFILE="logbrowser-setup.conf"; }
+[ ! -z "$FROM_MONOSPOT" ] && { CONFIGFILE="monospot-setup.conf"; } || { CONFIGFILE="logsigner-setup.conf"; }
 
-[ ! -e $PWD/$CONFIGFILE ] && { echo "logbrowser-setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/logbrowser-setup.conf; echo "Dosyayi bir editor araciligi ile duzenledikten sonra logbrowser-setup.sh'i yeniden calistirin"; exit 0; } 
+[ ! -e $PWD/$CONFIGFILE ] && { echo "logsigner-setup.conf dosyasi bulunamadi, git uzerinden cekilecek"; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/logsigner-setup.conf; echo "Dosyayi bir editor araciligi ile duzenledikten sonra logsigner-setup.sh'i yeniden calistirin"; exit 0; } 
 . $PWD/$CONFIGFILE
 
 #~ remove old configs
