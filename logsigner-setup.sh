@@ -6,7 +6,7 @@
 . $PWD/$CONFIGFILE
 
 #~ remove old configs
-[ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /usr/local/www/logbrowser /usr/local/captiveportal/logbrowser /sbin/logsigner.sh /sbin/logimza* /sbin/dhcptibduzenle.sh /sbin/dhcpdmodify.awk; } || { [ -e /sbin/logsigner.sh ] && { echo "Logsigner zaten kurulu, yeniden kurmak icin $CONFIGFILE dosyasi icinden REM_OLD_CFG degerini true yapin..."; exit 1; }; }
+[ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /sbin/logsigner.sh /sbin/logimza* /sbin/dhcptibduzenle.sh /sbin/dhcpdmodify.awk; } || { [ -e /sbin/logsigner.sh ] && { echo "Logsigner zaten kurulu, yeniden kurmak icin $CONFIGFILE dosyasi icinden REM_OLD_CFG degerini true yapin..."; exit 1; }; }
 
 #~ save project directory
 PROJECT_DIRECTORY=$PWD
