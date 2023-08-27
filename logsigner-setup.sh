@@ -6,7 +6,7 @@
 . $PWD/$CONFIGFILE
 
 #~ remove old configs
-[ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /usr/local/www/log_browser-master /sbin/logsigner.sh /sbin/dhcpdmodify.awk; }
+[ "$REM_OLD_CFG" == "true" ] && { echo "Eski yapılandırmalar ve dosyalar siliniyor..."; rm -rf /logimza/.openssl /logimza/$(date +%Y) /usr/local/www/log_browser /usr/local/www/logbrowser /usr/local/captiveportal/logbrowser /sbin/logsigner.sh /sbin/logimza* /sbin/dhcptibduzenle.sh /sbin/dhcpdmodify.awk; } || { [ -e /sbin/logsigner.sh ] && { echo "Logsigner zaten kurulu, yeniden kurmak icin .conf dosyasi icinden REM_OLD_CFG degerini true yapin..."; exit 1; }; }
 
 #~ save project directory
 PROJECT_DIRECTORY=$PWD
@@ -40,6 +40,7 @@ cp /logimza/.openssl/ssl/tsacert.pem /logimza/.openssl/CA/
 cp /logimza/.openssl/ssl/tsakey.pem /logimza/.openssl/CA/private/
 
 #~ install logbrowser
+cd $PROJECT_DIRECTORY
 [ -d /usr/local/captiveportal/logbrowser.bak ] && rm -rf /usr/local/captiveportal/logbrowser.bak
 [ -d /usr/local/captiveportal/logbrowser     ] && mv /usr/local/captiveportal/logbrowser /usr/local/captiveportal/logbrowser.bak
 [ -d /usr/local/www/logbrowser               ] && rm /usr/local/www/logbrowser
