@@ -43,6 +43,7 @@ logsigner_setup() {
 }
 
 [ -z "$FROM_MONOSPOT" ] && logsigner_setup
+[ ! -d /logimza ] && logsigner_setup
 
 #~ install logbrowser
 cd $PROJECT_DIRECTORY
