@@ -57,7 +57,7 @@ ln -sf /usr/local/captiveportal/logbrowser /usr/local/www/
 #~ install other helper scripts
 [ "$FETCH_FROM_GIT" == "true" ] && { fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/logsigner.sh -o /sbin/logsigner.sh; fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/bin/dhcpdmodify.awk -o /sbin/dhcpdmodify.awk;  } || { cd $PROJECT_DIRECTORY; cp $PWD/bin/logsigner.sh $PWD/bin/dhcpdmodify.awk /sbin/; }
 chmod +x /sbin/logsigner.sh /sbin/dhcpdmodify.awk 
-[ ! -z "$FROM_MONOSPOT" ] && { fetch https://raw.githubusercontent.com/monobilisim/monospot/master/bin/monospot-control.sh -o /sbin/monospot-control.sh; chmod +x /sbin/monospot-control.sh; }
+[ ! -z "$FROM_MONOSPOT" ] && { fetch https://raw.githubusercontent.com/monobilisim/monospot/master/monospot-control.sh -o /sbin/monospot-control.sh; chmod +x /sbin/monospot-control.sh; }
 
 #~ shortcuts
 monospot_entry="\n\t<menu>\n\t\t<name>Monospot</name>\n\t\t<section>Services</section>\n\t\t<url>/monospot</url>\n\t</menu>\n"
