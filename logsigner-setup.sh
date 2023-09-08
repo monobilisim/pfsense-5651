@@ -68,8 +68,8 @@ logbrowser_entry="\n\t<menu>\n\t\t<name>5651 Gunluk Tarayicisi</name>\n\t\t<sect
 
 #~ install cron system
 [ ! -n "$(pkg info | grep -o pfSense-pkg-Cron)" ] && { echo "pfSense-pkg-Cron paketi kuruluyor..."; pkg install -y pfSense-pkg-Cron; }
-[ ! -n "$(cat /cf/conf/config.xml | grep logsigner)" ] && { echo "Logsigner icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/<\/cron>/\t<item>\n\t\t\t<minute>59<\/minute>\n\t\t\t<hour>23<\/hour>\n\t\t\t<mday>*<\/mday>\n\t\t\t<month>*<\/month>\n\t\t\t<wday>*<\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/logsigner.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/1' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
-[ ! -z "$FROM_MONOSPOT" ] && [ ! -n "$(cat /cf/conf/config.xml | grep monospot)" ] && { echo "Monospot icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/<\/cron>/\t<item>\n\t\t\t<minute>@reboot<\/minute>\n\t\t\t<hour><\/hour>\n\t\t\t<mday><\/mday>\n\t\t\t<month><\/month>\n\t\t\t<wday><\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/monospot-control.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/1' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
+[ ! -n "$(cat /cf/conf/config.xml | grep logsigner)" ] && { echo "Logsigner icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/^\t<\/cron>/\t\t<item>\n\t\t\t<minute>59<\/minute>\n\t\t\t<hour>23<\/hour>\n\t\t\t<mday>*<\/mday>\n\t\t\t<month>*<\/month>\n\t\t\t<wday>*<\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/logsigner.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/g' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
+[ ! -z "$FROM_MONOSPOT" ] && [ ! -n "$(cat /cf/conf/config.xml | grep monospot)" ] && { echo "Monospot icin cronjob yukleniyor"; cat /cf/conf/config.xml | sed 's/^\t<\/cron>/\t\t<item>\n\t\t\t<minute>@reboot<\/minute>\n\t\t\t<hour><\/hour>\n\t\t\t<mday><\/mday>\n\t\t\t<month><\/month>\n\t\t\t<wday><\/wday>\n\t\t\t<who>root<\/who>\n\t\t\t<command>sh \/sbin\/monospot-control.sh<\/command>\n\t\t<\/item>\n\t<\/cron>/g' > /tmp/newcron; mv /tmp/newcron /cf/conf/config.xml; }
 sh /sbin/logsigner.sh
 _sep=$(perl -E 'say "#" x 85')
 echo ${_sep}
