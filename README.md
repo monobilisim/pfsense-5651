@@ -19,7 +19,7 @@
 
 ## Kurulum
 
-1. `fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/setup.sh` komutu ile script dosyası çekilir.
-2. `sh setup.sh` komutu çalıştırılarak ilk etapta setup.conf dosyası çekilir.
+1. `fetch https://raw.githubusercontent.com/monobilisim/pfsense-5651/master/logsigner-setup.sh` komutu ile script dosyası çekilir.
+2. `sh logsigner-setup.sh` komutu çalıştırılarak ilk etapta setup.conf dosyası çekilir.
 3. Herhangi bir editör aracılığı ile `setup.conf` dosyası düzenlenir.
-4. `setup.conf` dosyası düzenlendikten sonra `sh setup.sh` komutu yeniden çalıştırılır ve kurulum tamamlanır.
+4. `setup.conf` dosyası düzenlendikten sonra `sh logsigner-setup.sh` komutu yeniden çalıştırılır ve kurulum tamamlanır.
